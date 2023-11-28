@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+          crossorigin="anonymous">
+    <title>Your Page Title</title>
+    <style>
+        body {
+            background-color: #aed9e0; /* Light Blue background color */
+        }
+
+        .container {
+            margin-top: 50px;
+        }
+
+        .content-box {
+            background-color: #ffffff; /* White box background color */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-11">
+            <div class="content-box">
+                <h1>Title</h1>
+                <p>Content here</p>
+
+                <form>
+                    <div class="form-row align-items-center">
+                        <div class="col-auto">
+                            <label for="slider">Select a value:</label>
+                            <input type="range" class="form-control-range" id="slider" min="0" max="100" step="1" style="width: 600px;">
+                        </div>
+
+                        <div class="col-auto">
+                            <label for="inputValue">Or enter a value:</label>
+                            <input type="number" class="form-control" id="inputValue" placeholder="Enter value">
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+
+                <script>
+                    // Update the input box value when the slider is moved
+                    const slider = document.getElementById("slider");
+                    const inputValue = document.getElementById("inputValue");
+
+                    slider.addEventListener("input", function() {
+                        inputValue.value = slider.value;
+                    });
+
+                    // Update the slider value when the input box is manually typed
+                    inputValue.addEventListener("input", function() {
+                        const value = parseInt(inputValue.value);
+                        if (!isNaN(value) && value >= 0 && value <= 100) {
+                            slider.value = value;
+                        }
+                    });
+                </script>
+            </div>
+
+
+
+
+
+        </div>
+    </div>
+</div>
+</body>
+</html>
