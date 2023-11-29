@@ -1,30 +1,6 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet"
-          href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
-          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
-          crossorigin="anonymous">
-    <title>Your Page Title</title>
-    <style>
-        body {
-            background-color: #aed9e0; /* Light Blue background color */
-        }
-
-        .container {
-            margin-top: 50px;
-        }
-
-        .content-box {
-            background-color: #ffffff; /* White box background color */
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-    </style>
-</head>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:insert="~{template :: headFragment}"></head>
 <body>
 
 <div class="container">
@@ -35,20 +11,45 @@
                 <p>Content here</p>
 
                 <form>
+                    <div class="mb-3">
+                        <label for="formFile" class="form-label">PDB or GRO file, required</label>
+                        <input class="form-control" type="file" id="formFile">
+                    </div>
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
+                        <label class="form-check-label" for="flexSwitchCheckDefault">Default switch checkbox input</label>
+                    </div>
+                    <br>
+                    <div class="mb-1">
+                        <label for="exampleFormControlTextarea1" class="form-label">Example textarea</label>
+                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="1"></textarea>
+                    </div>
                     <div class="form-row align-items-center">
                         <div class="col-auto">
                             <label for="slider">Select a value:</label>
-                            <input type="range" class="form-control-range" id="slider" min="0" max="100" step="1" style="width: 600px;">
+                            <input type="range" class="form-control-range" id="slider" min="0" max="100" step="1" style="width: 300px;">
                         </div>
 
                         <div class="col-auto">
                             <label for="inputValue">Or enter a value:</label>
-                            <input type="number" class="form-control" id="inputValue" placeholder="Enter value">
+                            <input type="number" class="form-control" id="inputValue" placeholder="Enter value" style="width: 300px">
                         </div>
                     </div>
 
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </form>
+                <hr>
+                <h5 >Advanced settings</h5>
+                <p>
+                    Bellow you can find settings that you won't always need.
+                </p>
+                <div class="additional-content" style="display: none;">
+                    <p>
+                        This is the additional content that will be revealed when clicking "Show More". You can add more text or elements here.
+                    </p>
+                </div>
+                <button class="btn btn-primary" id="toggle-button" onclick="toggleContent()">Show More</button>
+
 
                 <script>
                     // Update the input box value when the slider is moved
@@ -67,12 +68,21 @@
                         }
                     });
                 </script>
+                <script>
+                    function toggleContent() {
+                        var additionalContent = document.querySelector('.additional-content');
+                        var showMoreButton = document.querySelector('#toggle-button');
+
+                        if (additionalContent.style.display === 'none') {
+                            additionalContent.style.display = 'block';
+                            showMoreButton.textContent = 'Show Less';
+                        } else {
+                            additionalContent.style.display = 'none';
+                            showMoreButton.textContent = 'Show More';
+                        }
+                    }
+                </script>
             </div>
-
-
-
-
-
         </div>
     </div>
 </div>
