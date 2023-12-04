@@ -7,81 +7,23 @@
     <div class="row justify-content-center">
         <div class="col-md-11">
             <div class="content-box">
-                <h1>Title</h1>
-                <p>Content here</p>
-
-                <form>
+                <h1>Martinize2</h1>
+                <hr>
+                <h4>Always required</h4>
+                <form method="post">
                     <div class="mb-3">
-                        <label for="formFile" class="form-label">PDB or GRO file, required</label>
-                        <input class="form-control" type="file" id="formFile">
+                        <label for="formFile" class="form-label">PDB file</label>
+                        <input class="form-control" type="file" id="formFile" name="PDBfile" required>
                     </div>
-                    <div class="form-check form-switch">
-                        <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
-                        <label class="form-check-label" for="flexSwitchCheckDefault">Default switch checkbox input</label>
+                    <div>
+                        <label>Output Topology</label>
+                        <input type="file" class="form-control" name="topology" required>
                     </div>
                     <br>
-                    <div class="mb-1">
-                        <label for="exampleFormControlTextarea1" class="form-label">Example textarea</label>
-                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="1"></textarea>
-                    </div>
-                    <div class="form-row align-items-center">
-                        <div class="col-auto">
-                            <label for="slider">Select a value:</label>
-                            <input type="range" class="form-control-range" id="slider" min="0" max="100" step="1" style="width: 300px;">
-                        </div>
-
-                        <div class="col-auto">
-                            <label for="inputValue">Or enter a value:</label>
-                            <input type="number" class="form-control" id="inputValue" placeholder="Enter value" style="width: 300px">
-                        </div>
-                    </div>
-
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </form>
-                <hr>
-                <h5 >Advanced settings</h5>
-                <p>
-                    Bellow you can find settings that you won't always need.
-                </p>
-                <div class="additional-content" style="display: none;">
-                    <p>
-                        This is the additional content that will be revealed when clicking "Show More". You can add more text or elements here.
-                    </p>
-                </div>
-                <button class="btn btn-primary" id="toggle-button" onclick="toggleContent()">Show More</button>
-
-
-                <script>
-                    // Update the input box value when the slider is moved
-                    const slider = document.getElementById("slider");
-                    const inputValue = document.getElementById("inputValue");
-
-                    slider.addEventListener("input", function() {
-                        inputValue.value = slider.value;
-                    });
-
-                    // Update the slider value when the input box is manually typed
-                    inputValue.addEventListener("input", function() {
-                        const value = parseInt(inputValue.value);
-                        if (!isNaN(value) && value >= 0 && value <= 100) {
-                            slider.value = value;
-                        }
-                    });
-                </script>
-                <script>
-                    function toggleContent() {
-                        var additionalContent = document.querySelector('.additional-content');
-                        var showMoreButton = document.querySelector('#toggle-button');
-
-                        if (additionalContent.style.display === 'none') {
-                            additionalContent.style.display = 'block';
-                            showMoreButton.textContent = 'Show Less';
-                        } else {
-                            additionalContent.style.display = 'none';
-                            showMoreButton.textContent = 'Show More';
-                        }
-                    }
-                </script>
+                <p th:text="${file}">Een test</p>
+                <p th:text="${file2}"></p>
             </div>
         </div>
     </div>

@@ -8,6 +8,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
 import java.io.IOException;
 import java.util.Date;
 @WebServlet(name = "IndexServlet", value = "/index")
@@ -20,7 +21,17 @@ public class IndexServlet extends HttpServlet {
     }
     private static final long serialVersionUID = 1L;
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException{
-        process(request, response);
+        String file = request.getParameter("PDBfile");
+        String file2 = request.getParameter("topology");
+        WebConfig.configureResponse(response);
+        WebContext ctx = new WebContext(
+                request,
+                response,
+                request.getServletContext());
+        ctx.setVariable("file", file);
+        ctx.setVariable("file2", file2);
+        WebConfig.createTemplateEngine(getServletContext()).
+                process("index", ctx, response.getWriter());;
     }
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException{
         process(request, response);
