@@ -14,12 +14,7 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.Date;
 @WebServlet(name = "IndexServlet", value = "/index")
-@MultipartConfig(
-        location = "C:\\Users\\laris\\Documents\\School\\Thema_10\\Martinize2-webapp\\Test_data\\temp",
-        fileSizeThreshold = 1024 * 1024,
-        maxFileSize = 1024 * 1024 * 10,
-        maxRequestSize = 1024 * 1024 * 10 * 2
-)
+
 public class IndexServlet extends HttpServlet {
     @Override
     public void init() throws ServletException {

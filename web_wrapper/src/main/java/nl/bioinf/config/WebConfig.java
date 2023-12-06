@@ -9,7 +9,7 @@ public class WebConfig {
         ServletContextTemplateResolver templateResolver =
                 new ServletContextTemplateResolver(servletContext);
         templateResolver.setTemplateMode("XHTML");
-        templateResolver.setPrefix("/templates/");
+        templateResolver.setPrefix("/WEB-INF/templates/");
         templateResolver.setSuffix(".html");
         templateResolver.setCacheTTLMs(3600000L);
         // Cache is set to true by default.
