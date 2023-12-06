@@ -10,8 +10,12 @@
     <servlet>
         <servlet-name>IndexServlet</servlet-name>
         <servlet-class>nl.bioinf.servlets.IndexServlet</servlet-class>
+        <init-param>
+            <param-name>temp-dir</param-name>
+            <param-value>C:\Users\laris\Documents\School\Thema_10\Martinize2-webapp\web_wrapper\src\main\webapp\temp\</param-value>
+        </init-param>
         <multipart-config>
-            <location>C:\Users\laris\Documents\School\Thema_10\Martinize2-webapp\Test_data\temp</location>
+            <location>C:\Users\laris\Documents\School\Thema_10\Martinize2-webapp\web_wrapper\src\main\webapp\temp</location>
         <!-- all in bytes -->
             <max-file-size>1048576</max-file-size>
             <max-request-size>10485760</max-request-size>

@@ -1,10 +1,10 @@
 package nl.bioinf.servlets;
 
 import nl.bioinf.config.WebConfig;
+import nl.bioinf.scripts.CommandlineBuilder;
 import org.thymeleaf.context.WebContext;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -30,14 +30,23 @@ public class IndexServlet extends HttpServlet {
                 request,
                 response,
                 request.getServletContext());
-        int index = 1;
+        CommandlineBuilder cmdBuilder = new CommandlineBuilder();
+
         try {
             Collection<Part> parts = request.getParts();
             for (Part filePart : parts){
-                String fileName = getFilename(filePart);
-                filePart.write(fileName);
-                ctx.setVariable("file" + index, fileName);
-                index += 1;
+                switch (filePart.getName()){
+                    case "PDBfile":
+                        String file1 = filePart.getSubmittedFileName();
+                        ctx.setVariable("file1", file1);
+                        filePart.write(file1);
+                        cmdBuilder.setPdbFile(getInitParameter("temp-dir") + file1);
+                    case "topology":
+                        String file2 = filePart.getSubmittedFileName();
+                        ctx.setVariable("file2", file2);
+                        filePart.write(file2);
+                        cmdBuilder.setTopologyFile(getInitParameter("temp-dir") + file2);
+                }
             }
             message = "Your files have been uploaded successfully!";
         } catch (ServletException e) {
@@ -63,14 +72,5 @@ public class IndexServlet extends HttpServlet {
         ctx.setVariable("currentDate", new Date());
         WebConfig.createTemplateEngine(getServletContext()).
                 process("index", ctx, response.getWriter());
-    }
-    private String getFilename(Part part){
-        String contentDisposition = part.getHeader("content-disposition");
-        if (!contentDisposition.contains("filename=")){
-            return null;
-        }
-        int beginIndex = contentDisposition.indexOf("filename=") + 10;
-        int endIndex = contentDisposition.length() - 1;
-        return contentDisposition.substring(beginIndex, endIndex);
     }
 }
