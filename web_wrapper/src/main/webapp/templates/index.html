@@ -10,20 +10,19 @@
                 <h1>Martinize2</h1>
                 <hr>
                 <h4>Always required</h4>
-                <form method="post">
-                    <div class="mb-3">
+                <form method="post" enctype="multipart/form-data" action="index">
                         <label for="formFile" class="form-label">PDB file</label>
                         <input class="form-control" type="file" id="formFile" name="PDBfile" required>
-                    </div>
-                    <div>
-                        <label>Output Topology</label>
-                        <input type="file" class="form-control" name="topology" required>
-                    </div>
                     <br>
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                        <label for="formFile" class="form-label">Output Topology</label>
+                        <input type="file" class="form-control" name="topology" required>
+                    <br>
+                    <button type="submit" value="upload" class="btn btn-primary">Submit</button>
                 </form>
-                <p th:text="${file}">Een test</p>
+                <p th:text="${message}">Een test</p>
+                <p th:text="${file1}"></p>
                 <p th:text="${file2}"></p>
+
             </div>
         </div>
     </div>

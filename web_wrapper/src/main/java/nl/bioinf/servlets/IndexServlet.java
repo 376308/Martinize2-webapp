@@ -4,14 +4,22 @@ import nl.bioinf.config.WebConfig;
 import org.thymeleaf.context.WebContext;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
+import javax.servlet.http.Part;
 import java.io.IOException;
+import java.util.Collection;
 import java.util.Date;
 @WebServlet(name = "IndexServlet", value = "/index")
+@MultipartConfig(
+        location = "C:\\Users\\laris\\Documents\\School\\Thema_10\\Martinize2-webapp\\Test_data\\temp",
+        fileSizeThreshold = 1024 * 1024,
+        maxFileSize = 1024 * 1024 * 10,
+        maxRequestSize = 1024 * 1024 * 10 * 2
+)
 public class IndexServlet extends HttpServlet {
     @Override
     public void init() throws ServletException {
@@ -21,15 +29,27 @@ public class IndexServlet extends HttpServlet {
     }
     private static final long serialVersionUID = 1L;
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException{
-        String file = request.getParameter("PDBfile");
-        String file2 = request.getParameter("topology");
+        String message = "";
         WebConfig.configureResponse(response);
         WebContext ctx = new WebContext(
                 request,
                 response,
                 request.getServletContext());
-        ctx.setVariable("file", file);
-        ctx.setVariable("file2", file2);
+        int index = 1;
+        try {
+            Collection<Part> parts = request.getParts();
+            for (Part filePart : parts){
+                String fileName = getFilename(filePart);
+                filePart.write(fileName);
+                ctx.setVariable("file" + index, fileName);
+                index += 1;
+            }
+            message = "Your files have been uploaded successfully!";
+        } catch (ServletException e) {
+            message = "Error uploading file:" + e.getMessage();
+        }
+
+        ctx.setVariable("message", message);
         WebConfig.createTemplateEngine(getServletContext()).
                 process("index", ctx, response.getWriter());;
     }
@@ -48,5 +68,14 @@ public class IndexServlet extends HttpServlet {
         ctx.setVariable("currentDate", new Date());
         WebConfig.createTemplateEngine(getServletContext()).
                 process("index", ctx, response.getWriter());
+    }
+    private String getFilename(Part part){
+        String contentDisposition = part.getHeader("content-disposition");
+        if (!contentDisposition.contains("filename=")){
+            return null;
+        }
+        int beginIndex = contentDisposition.indexOf("filename=") + 10;
+        int endIndex = contentDisposition.length() - 1;
+        return contentDisposition.substring(beginIndex, endIndex);
     }
 }
