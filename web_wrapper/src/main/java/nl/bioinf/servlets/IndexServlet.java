@@ -53,6 +53,8 @@ public class IndexServlet extends HttpServlet {
             message = "Error uploading file:" + e.getMessage();
         }
 
+        cmdBuilder.buildLine();
+
         ctx.setVariable("message", message);
         WebConfig.createTemplateEngine(getServletContext()).
                 process("index", ctx, response.getWriter());;
