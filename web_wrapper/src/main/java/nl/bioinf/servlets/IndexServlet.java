@@ -6,10 +6,8 @@ import org.thymeleaf.context.WebContext;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.Part;
+import javax.servlet.http.*;
+import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Date;
@@ -31,6 +29,10 @@ public class IndexServlet extends HttpServlet {
                 response,
                 request.getServletContext());
         CommandlineBuilder cmdBuilder = new CommandlineBuilder();
+        HttpSession session = request.getSession(true);
+        String sessionId = session.getId();
+        File sessionDir = new File(getInitParameter("temp-dir") + "/" + sessionId + "/");
+        sessionDir.mkdir();
 
         try {
             Collection<Part> parts = request.getParts();
@@ -39,13 +41,13 @@ public class IndexServlet extends HttpServlet {
                     case "PDBfile":
                         String file1 = filePart.getSubmittedFileName();
                         ctx.setVariable("file1", file1);
-                        filePart.write(file1);
-                        cmdBuilder.setPdbFile(getInitParameter("temp-dir") + file1);
+                        filePart.write(sessionDir + "/" + file1);
+                        cmdBuilder.setPdbFile(sessionDir + "/" + file1);
                     case "topology":
                         String file2 = filePart.getSubmittedFileName();
                         ctx.setVariable("file2", file2);
-                        filePart.write(file2);
-                        cmdBuilder.setTopologyFile(getInitParameter("temp-dir") + file2);
+                        filePart.write(sessionDir + "/" + file2);
+                        cmdBuilder.setTopologyFile(sessionDir + "/" + file2);
                 }
             }
             message = "Your files have been uploaded successfully!";
@@ -53,7 +55,7 @@ public class IndexServlet extends HttpServlet {
             message = "Error uploading file:" + e.getMessage();
         }
 
-        cmdBuilder.buildLine();
+        cmdBuilder.buildLine(sessionDir);
 
         ctx.setVariable("message", message);
         WebConfig.createTemplateEngine(getServletContext()).
