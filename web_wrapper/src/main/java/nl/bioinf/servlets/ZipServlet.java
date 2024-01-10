@@ -1,5 +1,8 @@
 package nl.bioinf.servlets;
 
+import nl.bioinf.config.WebConfig;
+import org.thymeleaf.context.WebContext;
+
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.annotation.WebServlet;
@@ -11,12 +14,18 @@ import java.io.*;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-@WebServlet(urlPatterns = "/zipservlet")
+@WebServlet(urlPatterns = "/finished")
 public class ZipServlet extends HttpServlet {
     public static final String FILE_SEPARATOR = System.getProperty("file.separator");
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        WebContext ctx = new WebContext(
+                request,
+                response,
+                request.getServletContext());
+        WebConfig.createTemplateEngine(getServletContext()).
+                process("index", ctx, response.getWriter());
         doGet(request, response);
     }
 
@@ -26,16 +35,14 @@ public class ZipServlet extends HttpServlet {
             // The path below is the root directory of data to be
             // compressed.
             HttpSession session = request.getSession(true);
-            String path = getInitParameter("temp-dir" + "/" + session.getId());
-
-            File directory = new File(path);
-            String[] files = directory.list();
+            String sessionId = session.getId();
+            File sessionDir = new File(getServletContext().getInitParameter("temp-dir") + "/" + sessionId + "/");
+            String[] files = sessionDir.list();
 
             // Checks to see if the directory contains some files.
             if (files != null && files.length > 0) {
-
                 // Call the zipFiles method for creating a zip stream.
-                byte[] zip = zipFiles(directory, files);
+                byte[] zip = zipFiles(sessionDir, files);
 
                 // Sends the response back to the user / browser. The
                 // content for zip file type is "application/zip". We
@@ -52,6 +59,7 @@ public class ZipServlet extends HttpServlet {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
     }
 
     /**

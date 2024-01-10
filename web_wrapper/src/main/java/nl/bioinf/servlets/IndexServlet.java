@@ -31,7 +31,7 @@ public class IndexServlet extends HttpServlet {
         CommandlineBuilder cmdBuilder = new CommandlineBuilder();
         HttpSession session = request.getSession(true);
         String sessionId = session.getId();
-        File sessionDir = new File(getInitParameter("temp-dir") + "/" + sessionId + "/");
+        File sessionDir = new File(getServletContext().getInitParameter("temp-dir") + "/" + sessionId + "/");
         sessionDir.mkdir();
 
         try {
@@ -50,7 +50,7 @@ public class IndexServlet extends HttpServlet {
                         cmdBuilder.setTopologyFile(sessionDir + "/" + file2);
                 }
             }
-            message = "Your files have been uploaded successfully!";
+            message = "Finished processing";
         } catch (ServletException e) {
             message = "Error uploading file:" + e.getMessage();
         }
