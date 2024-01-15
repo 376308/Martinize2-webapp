@@ -36,25 +36,26 @@ public class IndexServlet extends HttpServlet {
 
         try {
             Collection<Part> parts = request.getParts();
-            for (Part filePart : parts){
-                switch (filePart.getName()){
+            for (Part filePart : parts) {
+                switch (filePart.getName()) {
                     case "PDBfile":
                         String file1 = filePart.getSubmittedFileName();
                         ctx.setVariable("file1", file1);
-                        filePart.write(sessionDir + "/" + file1);
-                        cmdBuilder.setPdbFile(sessionDir + "/" + file1);
-                    case "topology":
-                        String file2 = filePart.getSubmittedFileName();
-                        ctx.setVariable("file2", file2);
-                        filePart.write(sessionDir + "/" + file2);
-                        cmdBuilder.setTopologyFile(sessionDir + "/" + file2);
+                        filePart.write(sessionDir + "" + "\\" + file1);
+                        cmdBuilder.setPdbFile(sessionDir + "\\" + file1);
                 }
+                message = "Finished processing";
             }
-            message = "Finished processing";
         } catch (ServletException e) {
             message = "Error uploading file:" + e.getMessage();
         }
 
+
+        if (request.getParameter("forcefield").length() >  1) {
+            String forceField = request.getParameter("forcefield");
+            cmdBuilder.setForcefield(forceField);
+            System.out.println(forceField);
+        }
         cmdBuilder.buildLine(sessionDir);
 
         ctx.setVariable("message", message);

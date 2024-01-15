@@ -1,26 +1,37 @@
 package nl.bioinf.scripts;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
+import java.io.*;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class CommandlineBuilder {
 
     private static String pdbFile;
-    private static String topologyFile;
+    private static String forcefield = null;
+
+    public static void setForcefield(String forcefield) {
+        CommandlineBuilder.forcefield = forcefield;
+    }
 
     public void buildLine(File sessionDir) throws IOException{
         // TODO remove hardcoded
         String hardcoded = "python C:/Users/laris/AppData/Local/Programs/Python/Python311/Scripts/martinize2";
         String output =  pdbFile + ".gro";
-        ProcessBuilder processbuilder = new ProcessBuilder("cmd", "/c", hardcoded, "-f", pdbFile,  "-x", output, "-o", topologyFile);
+        String topologyFile = "topol.top";
+        List<String> minimalcommand = new ArrayList<>(List.of("cmd", "/c", hardcoded, "-f", pdbFile, "-x", output, "-o", topologyFile));
+        if (forcefield != null){
+            minimalcommand.add( "-ff");
+            minimalcommand.add( forcefield);
+        }
+        System.out.println(minimalcommand);
+        ProcessBuilder processbuilder = new ProcessBuilder(minimalcommand);
         // TODO remove hardcoded
         processbuilder.directory(sessionDir);
-        Process test = processbuilder.start();
-        //TODO Check thread elsewhere, this prevents the popup message of successful upload
-        checkThread(test);
+        Process process = processbuilder.start();
+        
+        checkThread(process);
     }
 
 
@@ -43,7 +54,4 @@ public class CommandlineBuilder {
         CommandlineBuilder.pdbFile = pdbFile;
     }
 
-    public static void setTopologyFile(String topologyFile) {
-        CommandlineBuilder.topologyFile = topologyFile;
-    }
 }

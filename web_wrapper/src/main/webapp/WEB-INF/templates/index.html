@@ -18,9 +18,12 @@
                         <label for="formFile" class="form-label">PDB file</label>
                         <input class="form-control" type="file" accept=".pdb" id="formFile" name="PDBfile" required>
                     <br>
-                        <label for="formFile" class="form-label">Output Topology</label>
-                        <input type="file" class="form-control" name="topology" accept=".top" required>
+                    <hr>
+                    <h4>Often used</h4>
+                    <label for="formFile" class="form-label">Used force-field (default: martini3001)</label>
+                    <input type="text" class="form-control" name="forcefield">
                     <br>
+
                     <button type="submit" value="upload" class="btn btn-primary" id="submitButton">Submit</button>
                 </form>
                 <br>
@@ -33,10 +36,6 @@
                 <a id="downloadButton" style="display: none" href="/finished">
                     <button class="btn btn-primary">Download results</button>
                 </a>
-                <script>if (document.getElementById("finishedMessage").innerText == "Finished processing"){
-                    document.getElementById("downloadButton").style.display = "block"
-                }
-                </script>
 
             </div>
         </div>
@@ -44,5 +43,6 @@
 </div>
 
 <script type="text/javascript" src="/javascript/loadingAnimation.js"> </script>
+<script type="text/javascript" src="/javascript/showDownloadbutton.js"></script>
 </body>
 </html>
